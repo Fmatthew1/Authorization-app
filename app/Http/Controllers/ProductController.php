@@ -65,8 +65,13 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($id)
+    public function update(Request $request, $id, Product $product)
     {
+
+        if ($request->user()->cannot('update', $product)) {
+            abort(403);
+        }
+
         $product = Product::findOrFind($id);
         return view('products.update', ['product' => $product]);
     }
@@ -74,8 +79,12 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id, Product $product)
     {
+
+        if ($request->user()->cannot('delete', Product::class)) {
+            abort(403);
+        }
         $product = Product::findOrFind($id);
         return view('products.destroy', ['product' => $product]);
     }
