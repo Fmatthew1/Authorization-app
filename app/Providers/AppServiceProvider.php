@@ -22,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        Gate::define('update-product', function (User $user, Product $product) {
+            return $user->is_admin = 1;
+        });
+
         Gate::policy(Product::class, ProductPolicy::class);
     //     $this->registerPolicies();
 
