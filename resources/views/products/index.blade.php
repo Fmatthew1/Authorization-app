@@ -27,8 +27,17 @@
                                 @csrf
                                 @method('DELETE')
                                 <button><a href="{{ route('products.show', $product->id) }}" class="bg-blue-500 px-4 py-2 text-white rounded">View</a></button>
+                                @can('update', $product)
                                 <button><a href="{{ route('products.update', $product->id) }}" class="bg-yellow-500 px-4 py-2 text-white rounded">Edit</a></button>
+                                @else 
+                                    <p>You do not have permission to edit this product</p>
+                                @endcan
+
+                                @can('delete', $product)
                                 <button type="submit" class="bg-red-500 px-4 py-2 text-white rounded">Delete</button>
+                                @else 
+                                <p>You do not have permission to delete this product</p>
+                                @endcan
                             </form>
                         </td>
                     </tr>
