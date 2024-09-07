@@ -13,7 +13,7 @@ class ProductPolicy
      */
     public function viewAny(User $user, Product $product): bool
     {
-        return $user->id === $product->user_id || $user->is_admin;
+        return $user->id === $product->user_id || $user->role == 'admin';
     }
 
     /**
@@ -21,7 +21,7 @@ class ProductPolicy
      */
     public function view(User $user, Product $product): bool
     {
-        return $user->id === $product->user_id || $user->is_admin;
+        return $user->id === $product->user_id || $user->role == 'admin';
     }
 
     /**
@@ -38,7 +38,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product): bool
     {
-        return $user->id === $product->$user->is_admin;
+        return $user->role === 'admin';
     }
 
     /**
@@ -46,7 +46,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-        return $user->id === $product->$user->is_admin;
+        return $user->role === 'admin';
     }
 
     /**
@@ -54,7 +54,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product): bool
     {
-        return $user->id === $product->$user->is_admin;
+        return $user->role === 'admin';
     }
 
     /**
@@ -62,6 +62,6 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product): bool
     {
-        return $user->id === $product->$user->is_admin;
+        return $user->role === 'admin';
     }
 }
