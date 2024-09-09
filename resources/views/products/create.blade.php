@@ -8,7 +8,9 @@
                         @endforeach
                     </ul>
             @endif
-                
+            <div class="flex flex-col justify-center items-center">
+                <button><a href="{{ route('products.index') }}" class="bg-blue-600 px-4 py-2 text-white text-xl rounded">Back</a></button>
+             </div>  
             <div class="flex flex-col justify-center items-center">
                 <div class="font-normal md:font-bold text-lg mt-5">Create New Product</div>
 
@@ -33,7 +35,7 @@
                                 <label for="quantity" class="">Quantity</label>
                                 <input id="quantity" type="number" class=" w-full @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}">
                             </div>
-                            <button type="submit" class="bg-green-600 px-6 py-2 mt-4 w-1/2 text-white rounded">
+                            <button type="submit" class="bg-green-600 px-6 py-2 mt-4 w-1/2 text-white text-xl rounded">
                                 Submit
                             </button>
                         </div>

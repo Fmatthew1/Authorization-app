@@ -2,7 +2,9 @@
 
     <div >
         <h1 class="text-left font-bold text-3xl mt-5">Product List</h1>
-        <a href="{{ route('products.create') }}" class="text-left font-bold text-xl mt-5 mx-px">Add New Product</a>
+        <div class="flex flex-col">
+        <button><a href="{{ route('products.create') }}" class="bg-blue-500 mr-4 px-4 py-2 mb-7 text-white text-xl rounded ">Add New Product</a></button>
+        </div>
 
         <table class="min-w-full bg-white shadow-md rounded">
             <thead>
