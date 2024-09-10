@@ -9,7 +9,7 @@
                     </ul>
             @endif
             <div class="flex flex-col justify-center items-center">
-                <button><a href="{{ route('products.index') }}" class="bg-blue-600 px-4 py-2 text-white text-xl rounded">Back</a></button>
+                <button><a href="{{ route('products.store') }}" class="bg-blue-600 px-4 py-2 text-white text-xl rounded">Back</a></button>
              </div>  
             <div class="flex flex-col justify-center items-center">
                 <div class="font-normal md:font-bold text-lg mt-5">Create New Product</div>

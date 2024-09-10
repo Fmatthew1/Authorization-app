@@ -14,7 +14,7 @@
         </div>
                 <div class="font-normal md:font-bold text-lg mt-5">Update Products</div>
                 <div class="mt-5 w-[50%]">
-                    <form method="POST" action="/products/{{ $product->id }}">
+                    <form method="POST" action="{{ route('products.update', $product->id) }}">
                     @csrf
                     @method('PUT')
                     <div class="flex flex-col justify-center items-center w-full space-y-4">

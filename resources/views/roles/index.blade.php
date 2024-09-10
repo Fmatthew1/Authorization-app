@@ -1,6 +1,7 @@
 <x-app-layout>
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-semibold mb-6">All Roles</h1>
+        <button><a href="{{ route('roles.create') }}" class="bg-blue-500 px-4 py-2 text-white rounded text-left font-bold text-xl mt-5 mx-px">Add New Role</a></button>
         <table class="min-w-full bg-white shadow-md rounded">
             <thead>
                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
