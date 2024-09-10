@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
@@ -39,6 +40,12 @@ class ProductController extends Controller
 
         Product::create($request->all());
 
+        $product = new Product();
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->quantity = $request->quantity;
+        $product->save();
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
@@ -56,9 +63,11 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Product $product, $id)
+
     {
-        $product = Product::findOrFind($id);
+        Gate::authorize('update', $product);
+        $product = Product::findOrFail($id);
         return view('products.update', ['product' => $product]);
     }
 
@@ -68,11 +77,9 @@ class ProductController extends Controller
     public function update(Request $request, $id, Product $product)
     {
 
-        if ($request->user()->cannot('update', $product)) {
-            abort(403);
-        }
-
-        $product = Product::findOrFind($id);
+        
+        Gate::authorize('update', $product);
+        $product = Product::findOrFail($id);
         return view('products.update', ['product' => $product]);
     }
 
@@ -81,11 +88,8 @@ class ProductController extends Controller
      */
     public function destroy(Request $request, $id, Product $product)
     {
-
-        if ($request->user()->cannot('delete', Product::class)) {
-            abort(403);
-        }
-        $product = Product::findOrFind($id);
+        Gate::authorize('delete', $product);
+        $product = Product::findOrFail($id);
         return view('products.destroy', ['product' => $product]);
     }
 }
