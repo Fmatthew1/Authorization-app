@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
@@ -32,9 +33,17 @@ Route::middleware('can:user-only')->group(function () {
     Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
 });
 
+// Route::middleware(['auth', 'can:admin'])->group(function () {
+// Route::get('/admin', [AdminController::class, 'index']);
+// Route::post('/admin/make-admin/{user}', [AdminController::class, 'makeAdmin'])->name('make.admin');
+// });
+
+Route::get('/admin/manage-users', [AdminController::class, 'showUsers'])->name('admin.manageUsers');
+Route::post('/admin/make-admin/{id}', [AdminController::class, 'makeAdmin'])->name('admin.makeAdmin');
+
 Route::middleware(['auth'])->group(function () {
-Route::get('users/index', [UserController::class, 'index'])->name('users.index');
-Route::get('users/show/{id}', [UserController::class, 'show'])->name('users.show');
+Route::get('users', [UserController::class, 'index'])->name('users.index');
+Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
 Route::get('users/update/{id}', [UserController::class, 'update'])->name('users.update');
 });
 
@@ -43,7 +52,13 @@ Route::middleware(['auth'])->group(function () {
     });
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('products', ProductController::class);
+    Route::get('products', [ProductController::class, 'index'])->name('products.index');
+    Route::post('products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::get('products//{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::post('products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('products/update/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('products/destroy/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
 });
 
 require __DIR__.'/auth.php';
