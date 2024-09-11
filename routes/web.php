@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use Faker\Provider\UserAgent;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -44,19 +45,28 @@ Route::post('/admin/make-admin/{id}', [AdminController::class, 'makeAdmin'])->na
 Route::middleware(['auth'])->group(function () {
 Route::get('users', [UserController::class, 'index'])->name('users.index');
 Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
-Route::get('users/update/{id}', [UserController::class, 'update'])->name('users.update');
+Route::get('users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+Route::put('users/update/{id}', [UserController::class, 'update'])->name('users.update');
+Route::delete('users/destroy/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('roles', RoleController::class);
+    Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::get('roles/{id}', [RoleController::class, 'show'])->name('roles.show');
+    Route::get('roles/edit/{id}', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::post('roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::put('roles/update/{id}', [RoleController::class, 'update'])->name('roles.update');
+    Route::delete('roles/destroy/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
     });
 
 Route::middleware(['auth'])->group(function () {
     Route::get('products', [ProductController::class, 'index'])->name('products.index');
-    Route::post('products/create', [ProductController::class, 'create'])->name('products.create');
-    Route::get('products//{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('products/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
-    Route::get('products/update/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::put('products/update/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('products/destroy/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
 });

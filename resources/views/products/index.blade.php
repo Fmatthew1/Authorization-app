@@ -6,7 +6,7 @@
         <table class="min-w-full bg-white shadow-md rounded">
             <thead>
                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                    <th class="py-3 px-6 text-left">ID</th>
+                    <th class="py-3 px-6 text-left">#</th>
                     <th class="py-3 px-6 text-left">Name</th>
                     <th class="py-3 px-6 text-left">Description</th>
                     <th class="py-3 px-6 text-left">Price</th>
@@ -17,7 +17,7 @@
             <tbody class="text-gray-600 text-sm font-light">
                 @foreach($products as $product)
                     <tr class="border-b border-gray-200 hover:bg-gray-100">
-                        <td class="py-3 px-6 text-left whitespace-nowrap">{{ $product->id }}</td>
+                        <td class="py-3 px-6 text-left whitespace-nowrap">{{ $loop->index + 1 }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->name }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->description }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->price }}</td>
@@ -27,12 +27,12 @@
                                 <a href="{{ route('products.show', $product->id) }}" class="bg-blue-500 px-4 py-2 text-white rounded">
                                     View
                                 </a>
-                                @can('update', $product)
-                                <a href="{{ route('products.update', $product->id) }}" class="bg-yellow-500 ml-2 px-4 py-2 text-white rounded">
+                                
+                                <a href="{{ route('products.edit', $product->id) }}" class="bg-yellow-500 ml-2 px-4 py-2 text-white rounded">
                                     Edit
                                 </a>
-                                @endcan
-                                @can('update', $product)
+                        
+                            
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -40,7 +40,7 @@
                                         Delete
                                     </button>
                                 </form>
-                                @endcan
+                                
                             </div>
                         </td>
                     </tr>

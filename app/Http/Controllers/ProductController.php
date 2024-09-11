@@ -56,7 +56,7 @@ class ProductController extends Controller
     {
         
         $product = Product::findOrFail($id);
-        return view('products.show', ['product'=> $product]);
+        return view('products.show', ['products' => $product]);
 
     }
 
@@ -66,9 +66,9 @@ class ProductController extends Controller
     public function edit(Product $product, $id)
 
     {
-        Gate::authorize('update', $product);
+        //Gate::authorize('update', $product);
         $product = Product::findOrFail($id);
-        return view('products.update', ['product' => $product]);
+        return view('products.edit', ['product' => $product]);
     }
 
     /**
@@ -78,9 +78,25 @@ class ProductController extends Controller
     {
 
         
-        Gate::authorize('update', $product);
+        //Gate::authorize('update', $product);
+        // $product = Product::findOrFail($id);
+        // return view('products.update', ['product' => $product]);
+        request()->validate([
+            'name' => 'required',
+            'description' => 'required|max:255',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer',
+        ]);
+    
+        $product->update($request->all());
         $product = Product::findOrFail($id);
-        return view('products.update', ['product' => $product]);
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->description = $request->description;
+        $product->save();
+    
+        return redirect()->route('products.index')
+                        ->with('success','Product updated successfully');
     }
 
     /**
@@ -88,8 +104,11 @@ class ProductController extends Controller
      */
     public function destroy(Request $request, $id, Product $product)
     {
-        Gate::authorize('delete', $product);
+        //Gate::authorize('delete', $product);
         $product = Product::findOrFail($id);
-        return view('products.destroy', ['product' => $product]);
+        $product->delete();
+    
+        return redirect()->route('products.index')
+                        ->with('success','Product deleted successfully');
     }
 }

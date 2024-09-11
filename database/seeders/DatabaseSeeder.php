@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\UserSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use UserSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        $this->call([
+            RolesTableSeeder::class,
+            UserSeeder::class,
+        ]);
+
 
         // User::factory()->create([
         //     'name' => 'Admin',

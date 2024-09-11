@@ -48,7 +48,8 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-        return $user->id === $product->user_id;
+        return true;
+        //return $user->id === $product->user_id;
     }
 
     /**

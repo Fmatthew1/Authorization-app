@@ -21,7 +21,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        
         return view('roles.create');
+            
     }
 
     /**
@@ -32,6 +34,11 @@ class RoleController extends Controller
         $request->validate([
             'name' => 'required|max:255',
         ]);
+
+        $role = new Role();
+        $role->name = request('name');
+        $role->save();
+        return redirect('roles')->with('success','Role successfully created');
     }
 
     /**
@@ -48,8 +55,8 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        $role = Role::findOrFind($id);
-        return view('roles.update', ['role' => $role]);
+        $role = Role::findOrFail($id);
+        return view('roles.edit', ['role' => $role]);
     }
 
     /**
@@ -57,8 +64,14 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $role = Role::findOrFind($id);
+        $request->validate([
+            'name' => 'required | unique:roles,name | max:255',
+        ]);
+        $role = Role::findOrFail($id);
+        $role->name = $request->input('name');
+        $role->save();
         return view('roles.update', ['role' => $role]);
+       
     }
 
     /**
