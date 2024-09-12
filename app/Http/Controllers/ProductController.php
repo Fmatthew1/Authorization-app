@@ -32,7 +32,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|unique:products|max:255',
             'description' => 'required|max:255',
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
@@ -93,6 +93,7 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->price = $request->price;
         $product->description = $request->description;
+        $product->quantity = $request->quantity;
         $product->save();
     
         return redirect()->route('products.index')

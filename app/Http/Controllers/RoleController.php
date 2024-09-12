@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -32,13 +34,13 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|unique:roles|max:255',
         ]);
 
         $role = new Role();
         $role->name = request('name');
         $role->save();
-        return redirect('roles')->with('success','Role successfully created');
+        return redirect('roles.index')->with('success','Role successfully created');
     }
 
     /**
@@ -53,7 +55,7 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $role = Role::findOrFail($id);
         return view('roles.edit', ['role' => $role]);
@@ -62,15 +64,45 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
+       
         $request->validate([
-            'name' => 'required | unique:roles,name | max:255',
+            'name' => 'required|string|unique:roles,name|max:255,' . $id,
+           
         ]);
+
         $role = Role::findOrFail($id);
-        $role->name = $request->input('name');
+        $role->name = $request->name;
+        //dd($request->all());
         $role->save();
-        return view('roles.update', ['role' => $role]);
+
+        return redirect('roles.index')->with('success', 'Role Successfully Updated');
+        
+        // $role = Role::findOrFail($id);
+
+        // $validator = Validator::make($request->all(), [
+        //     'name' => [
+        //         'required',
+        //         Rule::unique('roles')->ignore($role),
+        //         'max:255',
+        //     ]
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return redirect()
+        //         ->back()
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+
+        // $input = request();
+
+        // $role = Role::find($id);
+        // $role->name = $input['name'];
+        // $role->save();
+
+        // return redirect('roles')->with('success', 'Role Successfully Updated');
        
     }
 

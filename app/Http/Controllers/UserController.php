@@ -72,33 +72,18 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email|unique:users,email,' . $id,
             'role' => 'required|string',
         ]);
-    
-        // Update the user's details
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->role = $request->input('role');
-        
+
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role = $request->role;
         $user->save();
-    
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
-    //     $request->validate([
-    //         'name' => 'required',
-    //         'email' => 'required|email|unique:users,email,'.$id,
-    //         'password' => 'same:confirm-password',
-    //         'roles' => 'required'
-    //     ]);
 
-    //    $user = User::findOrFail($id);
-    //    $user->name = $request->name;
-    //     $user->email = $request->email;
-    //     $user->password = Hash::make($request->password);
-    //     $user->role = $request->role;
-    //     $user->save();
-
-    //     return redirect('users')->with('Success', 'Users Successfully Updated');
+        return redirect('users')->with('Success', 'Users Successfully Updated');
     }
 
     /**
