@@ -1,12 +1,13 @@
 <x-app-layout>
             <h2 class="text-left font-bold text-3xl mt-5">Create Products</h2>
             @if ($errors->any())
-        
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
             <div class="flex flex-col justify-center items-center">
                 <button><a href="{{ route('products.index') }}" class="bg-blue-600 px-4 py-2 text-white text-xl rounded">Back</a></button>
