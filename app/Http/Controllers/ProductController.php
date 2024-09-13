@@ -38,14 +38,14 @@ class ProductController extends Controller
             'quantity' => 'required|integer',
         ]);
 
-        Product::create($request->all());
-
         $product = new Product();
         $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
         $product->quantity = $request->quantity;
+        $product->save;
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
+
     }
 
     /**
@@ -87,7 +87,6 @@ class ProductController extends Controller
             'quantity' => 'required|integer',
         ]);
     
-        $product->update($request->all());
         $product = Product::findOrFail($id);
         $product->name = $request->name;
         $product->price = $request->price;
