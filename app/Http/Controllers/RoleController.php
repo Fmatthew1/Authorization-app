@@ -95,16 +95,16 @@ class RoleController extends Controller
 
         $role->save();
 
-        //     $roleId = Role::find($id);
-        //     $request->validate([
-        //     'name' => 'required|unique:roles|max:255',
-        //     Rule::unique('roles')->ignore($roleId),
-                
+        // $roleId = Role::find($id);
+        // $request->validate([
+        // 'name' => 'required|unique:roles|max:255',
+        // Rule::unique('roles')->ignore($roleId),
+            
         // ]);
-    
-        //     $role = Role::find($id);
-        //     $role->name = $request->input('name');
-        //     $role->save();
+
+        // $role = Role::find($id);
+        // $role->name = $request->input('name');
+        // $role->save();
 
         return redirect()->route('roles.index')->with('success', 'Role Successfully Updated');
     }
