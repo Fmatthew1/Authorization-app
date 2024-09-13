@@ -14,12 +14,9 @@
             </div>
             <div class="mb-4">
                 <label for="role" class="block text-gray-700 text-sm font-bold mb-2">Role</label>
-                <select id="role" name="role" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
-                    <option value="project manager" {{ $user->role == 'project manager' ? 'selected' : '' }}>Project Manager</option>
-                    <option value="editor" {{ $user->role == 'editor' ? 'selected' : '' }}>Editor</option>
-                </select>
+                <div class="mb-4">
+                    <input type="text" id="name" name="name" value="{{ old('name', $user->role) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
             </div>
             <div class="flex items-center justify-between">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
