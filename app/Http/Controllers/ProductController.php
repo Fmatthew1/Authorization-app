@@ -45,7 +45,6 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->price = $request->price;
         $product->quantity = $request->quantity;
-        $product->save();
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 

@@ -23,8 +23,13 @@ class RoleController extends Controller
      */
     public function create()
     {
-        
-        return view('roles.create');
+        $role = new Role();
+
+        $role->name = request('name');
+
+        return view('roles.create', [
+            'role' => $role
+        ]);
             
     }
 
@@ -40,7 +45,7 @@ class RoleController extends Controller
         $role = new Role();
         $role->name = request('name');
         $role->save();
-        return redirect('roles.index')->with('success','Role successfully created');
+        return redirect()->route('roles.index')->with('success','Role successfully created');
     }
 
     /**
@@ -58,7 +63,11 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
-        return view('roles.edit', ['role' => $role]);
+        $roles = Role::pluck('name', 'id');
+        // dd($roles);
+
+        return view('roles.edit', ['role' => $role, 'roles' => $roles]);
+        
     }
 
     /**
@@ -66,44 +75,27 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
-        $request->validate([
-            'name' => 'required|string|unique:roles,name|max:255,' . $id,
-           
-        ]);
-
         $role = Role::findOrFail($id);
         $role->name = $request->name;
-        //dd($request->all());
+
+        $validator = Validator::make($request->all(), [
+            'name' => [
+                // 'required',
+                // Rule::unique('roles')->ignore($role),
+                'max:255',
+            ]
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $role->save();
 
-        return redirect('roles.index')->with('success', 'Role Successfully Updated');
-        
-        // $role = Role::findOrFail($id);
-
-        // $validator = Validator::make($request->all(), [
-        //     'name' => [
-        //         'required',
-        //         Rule::unique('roles')->ignore($role),
-        //         'max:255',
-        //     ]
-        // ]);
-
-        // if ($validator->fails()) {
-        //     return redirect()
-        //         ->back()
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
-
-        // $input = request();
-
-        // $role = Role::find($id);
-        // $role->name = $input['name'];
-        // $role->save();
-
-        // return redirect('roles')->with('success', 'Role Successfully Updated');
-       
+        return redirect()->route('roles.index')->with('success', 'Role Successfully Updated');
     }
 
     /**
@@ -111,6 +103,10 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        
+        $role = Role::findOrFail($id);
+        $role->delete();
+    
+        return redirect()->route('roles.index')
+                        ->with('success','Role deleted successfully');
     }
 }

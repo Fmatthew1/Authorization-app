@@ -83,7 +83,7 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->save();
 
-        return redirect('users')->with('Success', 'Users Successfully Updated');
+        return redirect('users.index')->with('success', 'User Successfully Updated');
     }
 
     /**
@@ -95,6 +95,6 @@ class UserController extends Controller
         $user->delete();
     
         return redirect()->route('users.index')
-                        ->with('success','Product deleted successfully');
+                        ->with('success','User deleted successfully');
     }
 }
