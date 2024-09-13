@@ -28,9 +28,10 @@ class UserSeeder extends Seeder
             'role' => 'admin',
             'email' => 'admin@example.com'
             ]
+            
         );
 
         // Create regular users with default role 'user'
-        User::factory()->count(10)->create(['role' => 'user']);
+        User::factory()->count(10)->create([ 'role' => 'user' ]);
     }
 }
