@@ -15,11 +15,12 @@
             @method('PUT')
             <div class="mb-4">
                 <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Role Name</label>
-                <select id="role" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    <option value="admin" {{ $role->name == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="user" {{ $role->name == 'user' ? 'selected' : '' }}>User</option>
-                    <option value="project manager" {{ $role->name == 'project manager' ? 'selected' : '' }}>Project Manager</option>
-                    <option value="editor" {{ $role->name == 'editor' ? 'selected' : '' }}>Editor</option>
+
+                <select name="name" id="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    @foreach ($roles as $role_id => $role_name)
+                        <option value="{{ $role_id }}" {{ $role->id == $role_id ? 'selected' : ''}} placeholder="Name" >{{ $role_name }} </option>
+                    @endforeach                 
+                    </option>
                 </select>
             </div>
             <div class="flex items-center justify-between">
