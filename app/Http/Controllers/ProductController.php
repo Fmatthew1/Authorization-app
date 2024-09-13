@@ -72,8 +72,6 @@ class ProductController extends Controller
 
         
         //Gate::authorize('update', $product);
-        // $product = Product::findOrFail($id);
-        // return view('products.update', ['product' => $product]);
         request()->validate([
             'name' => 'required',
             'description' => 'required|max:255',
