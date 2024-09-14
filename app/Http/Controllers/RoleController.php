@@ -23,14 +23,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $role = new Role();
-
-        $role->name = request('name');
-
-        return view('roles.create', [
-            'role' => $role
-        ]);
-            
+        return view('roles.create');         
     }
 
     /**
