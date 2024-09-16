@@ -21,22 +21,9 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-
-        Gate::define('update-product', function (User $user, Product $product) {
-            return $user->is_admin = 1;
-        });
+    { 
 
         Gate::policy(Product::class, ProductPolicy::class);
-    //     $this->registerPolicies();
-
-    //     Gate::define('admin-only', function (User $user) {
-    //     return $user->hasRole('admin');
-    // });
-
-    //     Gate::define('user-only', function (User $user) {
-    //     return $user->hasRole('user');
-    // });
 
     }
 }
