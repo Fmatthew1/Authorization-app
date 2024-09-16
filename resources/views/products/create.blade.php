@@ -1,5 +1,5 @@
 <x-app-layout>
-            <h2 class="text-left font-bold text-3xl mt-5">Create Products</h2>
+            <h2 class="text-left font-bold text-3xl mx-7 mt-5">Create Products</h2>
             @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -13,7 +13,7 @@
                 <button><a href="{{ route('products.index') }}" class="bg-blue-600 px-4 py-2 text-white text-xl rounded">Back</a></button>
              </div>  
             <div class="flex flex-col justify-center items-center">
-                <div class="font-normal md:font-bold text-lg mt-5">Create New Product</div>
+                <div class="font-normal md:font-bold text-3xl mt-5">Create New Product</div>
 
                 <div class="mt-5 w-[50%] ">
                     <form method="POST" action="{{ route('products.store') }}">

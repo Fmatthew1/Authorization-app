@@ -1,5 +1,5 @@
 <x-app-layout>
-        <h2 class="text-left font-bold text-3xl mt-5">Edit Products</h2>
+        <h2 class="text-left font-bold text-3xl mt-5 mx-7">Edit Products</h2>
         @if ($errors->any())
         
                 <ul>
@@ -12,7 +12,8 @@
         <div class="flex flex-col justify-center items-center">
            <button><a href="{{ route('products.index') }}" class="bg-blue-600 px-4 py-2 text-white rounded"> Back</a></button>
         </div>
-                <div class="font-normal md:font-bold text-lg mt-5">Update Products</div>
+        <div class="flex flex-col justify-center items-center">
+                <div class="font-normal md:font-bold text-3xl mt-5">Update Products</div>
                 <div class="mt-5 w-[50%]">
                     <form method="POST" action="{{ route('products.update', $product->id) }}">
                     @csrf
@@ -34,13 +35,14 @@
                                 <label for="name" class="">Quantity</label>
                                 <input id="quantity" type="number" class=" w-full @error('quantity') is-invalid @enderror" name="quantity" value="{{ $product->quantity}}">
                             </div>
-                            <div class="w-full">
-                                <button type="submit" class="bg-green-600 px-4 py-2 rounded w-1/2">
+                            
+                                <button type="submit" class="bg-green-600 px-6 py-2 mt-4 w-1/2 text-white text-xl rounded">
                                     Update Product
                                 </button>
-                            </div>
+                        
                         </div>
                     </form>
                 </div>
                 </div>
+            </div>
 </x-app-layout>
