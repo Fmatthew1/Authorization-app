@@ -29,8 +29,6 @@ class ProductPolicy
      */
     public function create(User $user, Product $product): bool
     {
-         // Allow creation if the user is authenticated
-         //return $user !== null;
          return true;
     }
 
@@ -39,7 +37,6 @@ class ProductPolicy
      */
     public function update(User $user, Product $product): bool
     {
-        //return $user->role === 'admin';
         return $user->role === 'admin';
     }
 
@@ -48,7 +45,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-        //return true;
+    
         return $user->role === 'admin';
     }
 
@@ -57,7 +54,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -65,6 +62,6 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product): bool
     {
-        return false;
+        return true;
     }
 }
