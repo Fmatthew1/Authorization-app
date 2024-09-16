@@ -27,12 +27,12 @@
                                 <a href="{{ route('products.show', $product->id) }}" class="bg-blue-500 px-4 py-2 text-white rounded">
                                     View
                                 </a>
-                                
+                                @can('update', $product)
                                 <a href="{{ route('products.edit', $product->id) }}" class="bg-yellow-500 ml-2 px-4 py-2 text-white rounded">
                                     Edit
                                 </a>
-                        
-                            
+                                @endcan
+                                @can('delete', $product)
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -40,7 +40,7 @@
                                         Delete
                                     </button>
                                 </form>
-                                
+                                @endcan
                             </div>
                         </td>
                     </tr>
