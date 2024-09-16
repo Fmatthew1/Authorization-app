@@ -59,7 +59,7 @@ class ProductController extends Controller
     public function edit(Product $product, $id)
 
     {
-        //Gate::authorize('update', $product);
+        Gate::authorize('update', $product);
         $product = Product::findOrFail($id);
         return view('products.edit', ['product' => $product]);
     }
@@ -69,16 +69,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id, Product $product)
     {
-
-        
+        Gate::authorize('update', $product);
         request()->validate([
             'name' => 'required',
             'description' => 'required|max:255',
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
         ]);
-        
-        Gate::authorize('update', $product);
         $product = Product::findOrFail($id);
         $product->name = $request->name;
         $product->price = $request->price;
