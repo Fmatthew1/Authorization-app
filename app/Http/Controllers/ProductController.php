@@ -71,14 +71,14 @@ class ProductController extends Controller
     {
 
         
-        //Gate::authorize('update', $product);
         request()->validate([
             'name' => 'required',
             'description' => 'required|max:255',
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
         ]);
-    
+        
+        Gate::authorize('update', $product);
         $product = Product::findOrFail($id);
         $product->name = $request->name;
         $product->price = $request->price;
@@ -95,7 +95,7 @@ class ProductController extends Controller
      */
     public function destroy(Request $request, $id, Product $product)
     {
-        //Gate::authorize('delete', $product);
+        Gate::authorize('delete', $product);
         $product = Product::findOrFail($id);
         $product->delete();
     
