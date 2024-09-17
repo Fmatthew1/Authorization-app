@@ -60,14 +60,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('roles/destroy/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
     });
     
-Route::middleware(['auth'])->group(function () {
+
     Route::get('products', [ProductController::class, 'index'])->name('products.index');
     Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
     Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
-    Route::get('products/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
-    Route::delete('products/destroy/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
-    Route::put('products/update/{id}', [ProductController::class, 'update'])->name('products.update');
-});
+    Route::get('products/edit/{product}', [ProductController::class, 'edit'])->name('products.edit')->middleware('can:update,product');
+    Route::put('products/update/{product}', [ProductController::class, 'update'])->name('products.update')->middleware('can:update,Product');
+    Route::delete('products/destroy/{product}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('can:delete,Product');
+
+
 
 require __DIR__.'/auth.php';
