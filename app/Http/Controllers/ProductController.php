@@ -15,6 +15,7 @@ class ProductController extends Controller
 
     {
         $products = Product::all();
+        //dd(auth()->user());
         return view('products.index', compact('products'));
     }
 
@@ -60,7 +61,7 @@ class ProductController extends Controller
 
     {
         //$product = Product::findOrFail($id);
-       // Gate::authorize('update', $product);
+        Gate::authorize('update', $product);
        
         return view('products.edit', ['product' => $product]);
     }
@@ -91,10 +92,10 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, $id, Product $product)
+    public function destroy(Request $request, Product $product)
     {
         Gate::authorize('delete', $product);
-        $product = Product::findOrFail($id);
+        //$product = Product::findOrFail($id);
         $product->delete();
     
         return redirect()->route('products.index')
