@@ -56,18 +56,19 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product, $id)
+    public function edit(Product $product)
 
     {
-        Gate::authorize('update', $product);
-        $product = Product::findOrFail($id);
+        //$product = Product::findOrFail($id);
+       // Gate::authorize('update', $product);
+       
         return view('products.edit', ['product' => $product]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id, Product $product)
+    public function update(Request $request, Product $product)
     {
         Gate::authorize('update', $product);
         request()->validate([
@@ -76,7 +77,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
         ]);
-        $product = Product::findOrFail($id);
+        //$product = Product::findOrFail($id);
         $product->name = $request->name;
         $product->price = $request->price;
         $product->description = $request->description;
