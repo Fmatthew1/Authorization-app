@@ -17,8 +17,7 @@ class AdminController extends Controller
                $query->where('name', 'admin');
             })->get();
 
-            return view('admin.manage-users', compact('users'));
-            
+            return view('admin.manage-users', compact('users'));            
          }
 
          // Make a user an admin
@@ -41,11 +40,9 @@ class AdminController extends Controller
 
             return redirect()->route('admin.manageUsers')->with('success', 'User has been made an admin.');
       }
-
          // If user is not found
             return redirect()->route('admin.manageUsers')->with('error', 'User not found.');
          
             }
-
   
 }
