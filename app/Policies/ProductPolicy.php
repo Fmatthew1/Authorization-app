@@ -4,10 +4,18 @@ namespace App\Policies;
 
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
-{   /**
+{
+    public function getAdminRoleId()
+    {
+        //fetch the admin role ID from role table
+        $adminRole = Role::where('name', 'admin')->first();
+        return $adminRole ? $adminRole->id : null;
+    }
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user, Product $product): bool
@@ -36,7 +44,11 @@ class ProductPolicy
      */
     public function update(User $user, Product $product): bool
     {
-        return $user->role === 'admin';
+        // Fetch the admin role ID dynamically
+        $adminRoleId = $this->getAdminRoleId();
+
+        // Allow update if the user has the admin role
+        return $user->roles->contains('id', $adminRoleId);
     }
 
     /**
@@ -45,7 +57,11 @@ class ProductPolicy
     public function delete(User $user, Product $product): bool
     {
     
-        return $user->role === 'admin';
+        // Fetch the admin role ID dynamically
+        $adminRoleId = $this->getAdminRoleId();
+
+        // Allow update if the user has the admin role
+        return $user->roles->contains('id', $adminRoleId);
     }
 
     /**
