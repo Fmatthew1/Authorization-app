@@ -13,10 +13,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
+    // public function isAdmin()
+    // {
+    //     return $this->role === 'admin';
+    // }
 
     /**
      * The attributes that are mass assignable.
@@ -27,7 +27,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id',
     ];
 
     /**
@@ -55,9 +55,9 @@ class User extends Authenticatable
     }
 
    // Define the relationship
-   public function roles(): BelongsTo
+   public function roles(): BelongsToMany
    {
-       return $this->belongsTo(Role::class);
+    return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
    }
    
 }
