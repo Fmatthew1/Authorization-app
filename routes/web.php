@@ -66,8 +66,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
     Route::get('products/edit/{product}', [ProductController::class, 'edit'])->name('products.edit')->middleware('can:update,product');
-    Route::put('products/update/{product}', [ProductController::class, 'update'])->name('products.update')->middleware('can:update,Product');
-    Route::delete('products/destroy/{product}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('can:delete,Product');
+    Route::put('products/update/{product}', [ProductController::class, 'update'])->name('products.update')->middleware('can:update,product');
+    Route::delete('products/destroy/{product}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('can:delete,product');
 
 
 
