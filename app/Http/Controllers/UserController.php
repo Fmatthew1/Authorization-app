@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function assignRole(Request $request, User $user, Role $role)
+    {
+        $user->assignRole($role);
+        return redirect()->back()->with('success', 'Role assigned successfully');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
         $users = User::all();
         return view('users.index', compact('users'));
+        
     }
 
     /**
@@ -30,18 +38,26 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:name|max:255',
-            'email' => 'required|unique:email|max:255',
+            'name' => 'required|unique:users|max:255',
+            'email' => 'required|unique:users|max:255',
             'password' => 'required|max:100',
-            'roles' => 'required'
+            'role_id' => 'required|exists:roles,id'
         ]);
-        
 
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
+        $user = new User();
 
-        $user = User::create($input);
-        $user->assignRole($request->input('roles'));
+        $input = request();
+
+        $user->name = $input['name'];
+        $user->email = $input['email'];
+        $user->password = Hash::make($input['password']);
+        $user->role_id = $input['role_id'];
+        $user->save();
+ 
+        // $input = $request->all();
+        // $user = User::create($input);
+        // $input['password'] = Hash::make($input['password']);
+        //$user->assignRole($request->input('roles'));
 
         return redirect()->route('users.index')
                         ->with('success','User created successfully');
@@ -50,16 +66,18 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         $user = User::findOrFail($id);
-        return view('users.show', ['user'=> $user]);
+        $roles = Role::all();
+        $assignedRoleId = $user->role_id;
+        return view('users.show', ['user' => $user, 'roles' => $roles, 'assignedRoleId' => $assignedRoleId]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $user = User::findOrFail($id);
         return view('users.edit', ['user' => $user]);
@@ -68,19 +86,17 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user, string $id)
+    public function update(Request $request, User $user, $id)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required|string',
         ]);
 
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->role = $request->role;
         $user->save();
 
         return redirect('users.index')->with('success', 'User Successfully Updated');
@@ -89,7 +105,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
