@@ -8,7 +8,7 @@
                     <th class="py-3 px-6 text-left">#</th>
                     <th class="py-3 px-6 text-left">Name</th>
                     <th class="py-3 px-6 text-left">Email</th>
-                    <th class="py-3 px-6 text-left">Role</th>
+                    {{-- <th class="py-3 px-6 text-left">Role</th> --}}
                     <th class="py-3 px-6 text-center">Actions</th>
                 </tr>
             </thead>
@@ -18,7 +18,7 @@
                         <td class="py-3 px-6 text-left whitespace-nowrap">{{ $loop->index + 1 }}</td>
                         <td class="py-3 px-6 text-left">{{ $user->name }}</td>
                         <td class="py-3 px-6 text-left">{{ $user->email }}</td>
-                        <td class="py-3 px-6 text-left">{{ $user->role }}</td>
+                        {{-- <td class="py-3 px-6 text-left">{{ $user->role_id }}</td> --}}
                         <td class="py-3 px-6 text-center">
                             <div class="flex item-center justify-center">
                                 <a href="{{ route('users.show', $user->id) }}" class="bg-blue-500 px-4 py-2 text-white rounded">
