@@ -82,7 +82,6 @@ class ProductController extends Controller
             'description' => 'required|max:255',
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
-            'status_id' => 'required|exists:statuses,id',
         ]);
         //$product = Product::findOrFail($id);
         $product->update($request->only('name', 'status_id'));
