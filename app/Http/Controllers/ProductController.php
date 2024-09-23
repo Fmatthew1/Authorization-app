@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -27,6 +28,7 @@ class ProductController extends Controller
         return view('products.create');
     }
 
+
     /**
      * Store a newly created resource in storage.
      */
@@ -37,6 +39,7 @@ class ProductController extends Controller
             'description' => 'required|max:255',
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
+            
         ]);
 
         Product::create($request->all());
@@ -50,7 +53,9 @@ class ProductController extends Controller
     {
         
         $product = Product::findOrFail($id);
-        return view('products.show', ['products' => $product]);
+        $statuses = Status::all();
+        return view('products.show', compact('product', 'statuses'));
+        //return view('products.show', ['products' => $product]);
 
     }
 
@@ -77,8 +82,10 @@ class ProductController extends Controller
             'description' => 'required|max:255',
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
+            'status_id' => 'required|exists:statuses,id',
         ]);
         //$product = Product::findOrFail($id);
+        $product->update($request->only('name', 'status_id'));
         $product->name = $request->name;
         $product->price = $request->price;
         $product->description = $request->description;
@@ -101,4 +108,24 @@ class ProductController extends Controller
         return redirect()->route('products.index')
                         ->with('success','Product deleted successfully');
     }
+
+    public function forward(Product $product)
+{
+    $product->update(['status_id' => 2]); // Forwarded status ID from the statuses table
+
+    return redirect()->route('products.index', $product->id)
+                     ->with('success', 'Product status updated to Forwarded.');
+}
+
+
+    public function confirm(Product $product)
+{
+    $product->update(['status_id' => 3]); // Confirmed status ID from the statuses table
+
+    return redirect()->route('products.index', $product->id)
+                     ->with('success', 'Product status updated to Confirmed.');
+}
+
+    
+   
 }
