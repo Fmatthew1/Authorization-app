@@ -11,6 +11,9 @@
                     <th class="py-3 px-6 text-left">Description</th>
                     <th class="py-3 px-6 text-left">Price</th>
                     <th class="py-3 px-6 text-center">Quantity</th>
+                    <th class="py-3 px-6 text-center">Created By</th>
+                    <th class="py-3 px-6 text-center">Confirmed By</th>
+                    <th class="py-3 px-6 text-center">Status</th>
                     <th class="py-3 px-6 text-center">Actions</th>
                 </tr>
             </thead>
@@ -22,7 +25,27 @@
                         <td class="py-3 px-6 text-left">{{ $product->description }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->price }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->quantity }}</td>
+                        <td class="py-3 px-6 text-left">{{ $product->created_by }}</td>
+                        <td class="py-3 px-6 text-left">{{ $product->confirmed_by }}</td>
+                        <td class="py-3 px-6 text-left">{{ $product->status->name }}</td>
                         <td class="py-3 px-6 text-center">
+                            @can('update', $product)
+                                <form action="{{ route('products.index', $product->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="bg-gray-500 text-white px-4 py-2 rounded">
+                                        Forwarded
+                                    </button>
+                                </form>
+                            @endcan
+
+                            @can('confirm', $product)
+                                <form action="{{ route('products.index', $product->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
+                                        Confirmed
+                                    </button>
+                                </form>
+                            @endcan
                             <div class="flex item-center justify-center">
                                 <a href="{{ route('products.show', $product->id) }}" class="bg-blue-500 px-4 py-2 text-white rounded">
                                     View
