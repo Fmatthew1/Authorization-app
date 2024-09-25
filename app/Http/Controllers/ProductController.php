@@ -108,22 +108,28 @@ class ProductController extends Controller
                         ->with('success','Product deleted successfully');
     }
 
-    public function forward(Product $product)
-{
-    $product->update(['status_id' => 2]); // Forwarded status ID from the statuses table
+    public function forward($id) {
+        $product = Product::findOrFail($id);
+        $forward_status = Status::where('name', 'Forwarded')->first();
+        $product->update(['status_id' => $forward_status->id]);
+        return redirect()->back()->with('status', 'Product forwarded successfully');
+    }
 
-    return redirect()->route('products.index', $product->id)
-                     ->with('success', 'Product status updated to Forwarded.');
-}
+    public function showConfirmPage(Product $product) {
+        // Ensure the product is forwarded and only the project manager can confirm
+        //if ($product->status === 'forwarded' && auth()->user()->role === 'project_manager') {
+            // return view('products.confirm', compact('product'));
+       // }
+        // return redirect()->back()->with('error', 'You are not allowed to confirm this product');
+    }
 
-
-    public function confirm(Product $product)
-{
-    $product->update(['status_id' => 3]); // Confirmed status ID from the statuses table
-
-    return redirect()->route('products.index', $product->id)
-                     ->with('success', 'Product status updated to Confirmed.');
-}
+    public function confirm($id) {
+        // Only the project manager can confirm
+        $product = Product::findOrFail($id);
+        $confirmed_status = Status::where('name', 'Confirmed')->first();
+        $product->update(['status_id' => $confirmed_status->id]);
+        return redirect()->back()->with('status', 'Product confirmed successfully');
+    }
 
     
    
