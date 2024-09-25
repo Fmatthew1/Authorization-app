@@ -16,9 +16,9 @@ class StatusSeeder extends Seeder
     {
      
         DB::table('statuses')->insert([
-            ['name' => 'Pending'],
-            ['name' => 'Forwarded'],
-            ['name' => 'Confirmed']
+            ['name' => 'Pending', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Forwarded', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Confirmed', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }
