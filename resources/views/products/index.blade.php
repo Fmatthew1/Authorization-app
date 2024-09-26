@@ -30,22 +30,23 @@
                         <td class="py-3 px-6 text-left">{{ $product->status->name }}</td>
                         <div class="flex item-center justify-center">
                         <td class="py-2 px-4 text-center">
-                            @can('update', $product)
+                            
                                 <form action="{{ route('products.forward', $product->id) }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" class="inline-flex bg-gray-500 text-white px-3 py-2 rounded">
                                         Forwarded
                                     </button>
                                 </form>
-                            @endcan
-
                             
+
+                                @can('confirm', $product)
                                 <form action="{{ route('products.confirm', $product->id) }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" class="inline-flex bg-green-500 text-white px-3 py-2 rounded">
                                         Confirmed
                                     </button>
                                 </form>
+                                @endcan
                             
                             
                                 <a href="{{ route('products.show', $product->id) }}" class="inline-flex bg-blue-500 px-3 py-2 text-white rounded">
