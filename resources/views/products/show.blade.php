@@ -3,26 +3,7 @@
         <h1 class="text-2xl font-semibold mb-6 px-3 py-2 ">Show A Single Product</h1>
         <div class="flex flex-col justify-center items-center">
             <button><a href="{{ route('products.index') }}" class="bg-blue-600 px-4 py-2 text-white rounded">Product Page</a></button>
-            {{-- <div>
-                <h2>{{ $product->name }}</h2>
-                <p>Status: {{ $product->status->name }}</p>
-                @if ($product->status === 'pending' && auth()->user()->id === $product->created_by)
-                <form method="POST" action="{{ route('products.forward', $product->id) }}">
-                    @csrf
-                    <button type="submit" class="inline-flex bg-blue-500 ml-2 px-3 py-2 text-white rounded">Forward Product</button>
-                </form>
-                @endif
-
-                @if ($product->status === 'forwarded' && auth()->user()->role === 'project_manager')
-                <a href="{{ route('products.confirm.page', $product->id) }}" class="inline-flex bg-green-500 ml-2 px-3 py-2 text-white rounded">Confirm Product</a>
-                @endif
-            </div> --}}
-        {{-- </div>
-            <p>{{ $product->name }}</p>
-            <p>{{ $product->description }}</p>
-            <p>{{ $product->price }}</p>
-            <p>{{ $product->quantity }}</p>
-        </div> --}}
+           
         <div class="max-w-4xl mx-auto py-6">
             <h2 class="text-2xl font-bold mb-4">Product Details</h2>
             <table class="min-w-full border-collapse block md:table">
@@ -57,14 +38,14 @@
                                     </button>
                                 </form>
                         @endcan
-
+                        @can('confirm', $product)
                         <form action="{{ route('products.confirm', $product->id) }}" method="POST" class="inline">
                             @csrf
                             <button type="submit" class="inline-flex bg-green-500 text-white px-3 py-2 rounded">
                                 Confirmed
                             </button>
                         </form>
-                    
+                        @endcan
                     </tr>
                 </tbody>
             </table>
