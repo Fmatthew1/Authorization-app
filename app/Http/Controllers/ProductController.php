@@ -123,9 +123,10 @@ class ProductController extends Controller
         // return redirect()->back()->with('error', 'You are not allowed to confirm this product');
     }
 
-    public function confirm($id) {
-        // Only the project manager can confirm
-        $product = Product::findOrFail($id);
+    public function confirm(Product $product) {
+        // Only the admin can confirm
+        Gate::authorize('confirm', $product);
+        //$product = Product::findOrFail($id);
         $confirmed_status = Status::where('name', 'Confirmed')->first();
         $product->update(['status_id' => $confirmed_status->id]);
         return redirect()->back()->with('status', 'Product confirmed successfully');
