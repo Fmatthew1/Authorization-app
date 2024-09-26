@@ -46,10 +46,10 @@ class ProductPolicy
     {
         return true;
         // Fetch the admin role ID dynamically
-        //$adminRoleId = $this->getAdminRoleId();
+        $adminRoleId = $this->getAdminRoleId();
 
         // Allow update if the user has the admin role
-        //return $user->roles->contains('id', $adminRoleId);
+        return $user->roles->contains('id', $adminRoleId);
     }
 
     /**
@@ -60,10 +60,10 @@ class ProductPolicy
         return true;
     
         // Fetch the admin role ID dynamically
-       // $adminRoleId = $this->getAdminRoleId();
+        $adminRoleId = $this->getAdminRoleId();
 
         // Allow update if the user has the admin role
-        //return $user->roles->contains('id', $adminRoleId);
+        return $user->roles->contains('id', $adminRoleId);
     }
 
     /**
@@ -80,5 +80,16 @@ class ProductPolicy
     public function forceDelete(User $user, Product $product): bool
     {
         return true;
+    }
+
+    public function confirm(User $user, Product $product): bool
+    {
+        return true;
+    
+        // Fetch the admin role ID dynamically
+        $adminRoleId = $this->getAdminRoleId();
+
+        // Allow update if the user has the admin role
+        return $user->roles->contains('id', $adminRoleId);
     }
 }
