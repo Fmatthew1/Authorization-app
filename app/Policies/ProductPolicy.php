@@ -84,7 +84,7 @@ class ProductPolicy
 
     public function confirm(User $user, Product $product): bool
     {
-        return true;
+
     
         // Fetch the admin role ID dynamically
         $adminRoleId = $this->getAdminRoleId();
