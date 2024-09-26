@@ -66,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
     Route::post('products/{id}/forward', [ProductController::class, 'forward'])->name('products.forward');
-    Route::post('products/{id}/confirm', [ProductController::class, 'confirm'])->name('products.confirm');
+    Route::post('products/{product}/confirm', [ProductController::class, 'confirm'])->name('products.confirm')->middleware('can:confirm,product');
     Route::get('/products/{product}/confirm', [ProductController::class, 'showConfirmPage'])->name('products.confirm.page');
     Route::get('products/edit/{product}', [ProductController::class, 'edit'])->name('products.edit')->middleware('can:update,product');
     Route::put('products/update/{product}', [ProductController::class, 'update'])->name('products.update')->middleware('can:update,product');
