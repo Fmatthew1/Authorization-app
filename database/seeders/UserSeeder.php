@@ -32,21 +32,21 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Matthew',
                 'password' => bcrypt('password'),
-                'role' => 'user',
+                'role' => 'Product Manager',
                 'email' => 'matthew@gmail.com'
             ],
 
             [
                 'name' => 'Fekumoh',
                 'password' => bcrypt('password'),
-                'role' => 'Project Manager',
+                'role' => 'user',
                 'email' => 'fekumoh@gmail.com'
             ],
 
             [
                 'name' => 'John',
                 'password' => bcrypt('password'),
-                'role' => 'editor',
+                'role' => 'user',
                 'email' => 'ojcool@gmail.com'
             ]
             
