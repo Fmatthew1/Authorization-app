@@ -41,6 +41,7 @@ Route::middleware('can:user-only')->group(function () {
 
 Route::get('/admin/manage-users', [AdminController::class, 'showUsers'])->name('admin.manageUsers');
 Route::post('/admin/make-admin/{id}', [AdminController::class, 'makeAdmin'])->name('admin.makeAdmin');
+Route::post('/admin/make-productManager/{id}', [AdminController::class, 'productManager'])->name('admin.productManager');
 
 Route::middleware(['auth'])->group(function () {
 Route::get('users', [UserController::class, 'index'])->name('users.index');
@@ -65,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
     Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
-    Route::post('products/{id}/forward', [ProductController::class, 'forward'])->name('products.forward');
+    Route::post('products/{product}/forward', [ProductController::class, 'forward'])->name('products.forward');
     Route::post('products/{product}/confirm', [ProductController::class, 'confirm'])->name('products.confirm')->middleware('can:confirm,product');
     Route::get('/products/{product}/confirm', [ProductController::class, 'showConfirmPage'])->name('products.confirm.page');
     Route::get('products/edit/{product}', [ProductController::class, 'edit'])->name('products.edit')->middleware('can:update,product');
