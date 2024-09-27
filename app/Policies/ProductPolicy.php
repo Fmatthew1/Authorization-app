@@ -9,12 +9,6 @@ use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
 {
-    public function getUserRoleId()
-    {
-        //fetch the user role ID from role table
-        $userRole = Role::where('name', 'user')->first();
-        return $userRole ? $userRole->id : null;
-    }
 
     public function getAdminRoleId()
     {
@@ -28,6 +22,13 @@ class ProductPolicy
         //fetch the product manager role ID from role table
         $productManagerRole = Role::where('name', 'Product Manager')->first();
         return $productManagerRole ? $productManagerRole->id : null;
+    }
+
+    public function getUserRoleId()
+    {
+        //fetch the user role ID from role table
+        $userRole = Role::where('name', 'user')->first();
+        return $userRole ? $userRole->id : null;
     }
     /**
      * Determine whether the user can view any models.
@@ -50,10 +51,12 @@ class ProductPolicy
      */
     public function create(User $user, Product $product): bool
     {
-        //$adminRoleId = $this->getAdminRoleId();
-        $userRoleId = $this->getUserRoleId();
-        
-        return $user->roles->contains('id', $userRoleId);
+         // Fetch role IDs dynamically from the database
+         $adminRole = Role::where('name', 'admin')->first()->id;
+         $productManagerRole = Role::where('name', 'product manager')->first()->id;
+ 
+         // Allow only users who are not product managers (role_id 2) to create a product
+         return $user->role_id !== $productManagerRole;
     }
 
     /**
@@ -100,10 +103,9 @@ class ProductPolicy
 
     public function forward(User $user, Product $product): bool
     {
-        $adminRoleId = $this->getAdminRoleId();
-        $userRoleId = $this->getUserRoleId();
-    
-        return $user->roles->contains('id', $adminRoleId) || $user->roles->contains('id', $userRoleId);
+
+        return $user->id === $product->created_by;
+
     }
 
     public function confirm(User $user, Product $product): bool
