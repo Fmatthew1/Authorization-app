@@ -9,11 +9,25 @@ use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
 {
+    public function getUserRoleId()
+    {
+        //fetch the user role ID from role table
+        $userRole = Role::where('name', 'user')->first();
+        return $userRole ? $userRole->id : null;
+    }
+
     public function getAdminRoleId()
     {
         //fetch the admin role ID from role table
         $adminRole = Role::where('name', 'admin')->first();
         return $adminRole ? $adminRole->id : null;
+    }
+
+    public function productManagerRoleId()
+    {
+        //fetch the product manager role ID from role table
+        $productManagerRole = Role::where('name', 'Product Manager')->first();
+        return $productManagerRole ? $productManagerRole->id : null;
     }
     /**
      * Determine whether the user can view any models.
@@ -36,7 +50,10 @@ class ProductPolicy
      */
     public function create(User $user, Product $product): bool
     {
-         return true;
+        //$adminRoleId = $this->getAdminRoleId();
+        $userRoleId = $this->getUserRoleId();
+        
+        return $user->roles->contains('id', $userRoleId);
     }
 
     /**
@@ -44,7 +61,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product): bool
     {
-        return true;
+    
         // Fetch the admin role ID dynamically
         $adminRoleId = $this->getAdminRoleId();
 
@@ -57,12 +74,11 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-        return true;
     
         // Fetch the admin role ID dynamically
         $adminRoleId = $this->getAdminRoleId();
 
-        // Allow update if the user has the admin role
+        // Allow delete if the user has the admin role
         return $user->roles->contains('id', $adminRoleId);
     }
 
@@ -71,7 +87,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -79,17 +95,29 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product): bool
     {
-        return true;
+        return false;
+    }
+
+    public function forward(User $user, Product $product): bool
+    {
+        $adminRoleId = $this->getAdminRoleId();
+        $userRoleId = $this->getUserRoleId();
+    
+        return $user->roles->contains('id', $adminRoleId) || $user->roles->contains('id', $userRoleId);
     }
 
     public function confirm(User $user, Product $product): bool
     {
-
-    
         // Fetch the admin role ID dynamically
         $adminRoleId = $this->getAdminRoleId();
-
-        // Allow update if the user has the admin role
-        return $user->roles->contains('id', $adminRoleId);
+        $productManagerRoleId = $this->productManagerRoleId();
+        // Allow confirm if the user has the admin role or Product Manager role
+        return $user->roles->contains('id', $adminRoleId) || $user->roles->contains('id', $productManagerRoleId);
     }
+
+    // public function createOrForward(User $user, Product $product)
+    // {
+    //     // Only Users or Admin can create and forward products
+    //     return $user->role->name === 'user' || $user->role->name === 'admin';
+    // }
 }
