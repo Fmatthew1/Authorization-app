@@ -16,7 +16,6 @@ class ProductController extends Controller
 
     {
         $products = Product::all();
-        //dd(auth()->user());
         return view('products.index', compact('products'));
     }
 
@@ -113,26 +112,13 @@ class ProductController extends Controller
     }
 
     public function forward(Product $product) {
-        Gate::authorize('confirm', $product);
+        Gate::authorize('forward', $product);
         //$product = Product::findOrFail($id);
         $forward_status = Status::where('name', 'Forwarded')->first();
         $product->update(['status_id' => $forward_status->id]);
         return redirect()->back()->with('status', 'Product forwarded successfully');
     }
     
-
-    // public function createOrForward(Request $request, Product $product)
-    // {
-    //     if (Gate::denies('createOrForward', $product)) {
-    //         return response()->json(['error' => 'Unauthorized'], 403);
-    //     }
-        
-    //     // Create or forward the product logic
-    //     // ...
-    // }
-
-    
-
     public function confirm(Product $product) {
         // Only the admin can confirm
         Gate::authorize('confirm', $product);
