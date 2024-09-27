@@ -37,8 +37,14 @@
                         <td class="px-4 py-2">
                             <form action="{{ route('admin.makeAdmin', $user->id) }}" method="POST">
                                 @csrf
-                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                <button type="submit" class="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600">
                                     Make Admin
+                                </button>
+                            </form>
+                            <form action="{{ route('admin.productManager', $user->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="bg-green-500 text-white px-3 py-2 rounded hover:bg-blue-600">
+                                    ProductManager
                                 </button>
                             </form>
                         </td>
