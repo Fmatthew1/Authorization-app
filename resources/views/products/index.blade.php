@@ -2,7 +2,11 @@
 
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-semibold mb-6">Product List</h1>
-        <button><a href="{{ route('products.create') }}" class="bg-blue-500 px-4 py-2 text-white rounded text-left font-bold text-xl mt-5 mx-px">Add New Products</a></button>
+    
+        <button><a href="{{ route('products.create') }}" class="bg-blue-500 px-4 py-2 text-white rounded text-left font-bold text-xl mt-5 mx-px">Add New Products</a>
+        </button>
+        
+    
         <table class="min-w-full bg-white shadow-md rounded">
             <thead>
                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -30,15 +34,14 @@
                         <td class="py-3 px-6 text-left">{{ $product->status->name }}</td>
                         <div class="flex item-center justify-center">
                         <td class="py-2 px-4 text-center">
-                            
+                                @can('forward', $product)
                                 <form action="{{ route('products.forward', $product->id) }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" class="inline-flex bg-gray-500 text-white px-3 py-2 rounded">
                                         Forwarded
                                     </button>
                                 </form>
-                            
-
+                                @endcan
                                 @can('confirm', $product)
                                 <form action="{{ route('products.confirm', $product->id) }}" method="POST" class="inline">
                                     @csrf
@@ -47,8 +50,7 @@
                                     </button>
                                 </form>
                                 @endcan
-                            
-                            
+                                                    
                                 <a href="{{ route('products.show', $product->id) }}" class="inline-flex bg-blue-500 px-3 py-2 text-white rounded">
                                     View
                                 </a>
