@@ -31,6 +31,8 @@ class AdminController extends Controller
             return redirect()->route('admin.manageUsers')->with('error', 'Admin role not found.');
       }
 
+
+
          // Find the user by ID
             $user = User::find($id);
 
@@ -39,6 +41,32 @@ class AdminController extends Controller
             $user->roles()->attach($adminRole->id);
 
             return redirect()->route('admin.manageUsers')->with('success', 'User has been made an admin.');
+      }
+         // If user is not found
+            return redirect()->route('admin.manageUsers')->with('error', 'User not found.');
+         
+            }
+
+            public function productManager($id)
+         {
+            // Get the 'admin' role
+            $productManagerRole = Role::where('name', 'Product Manager')->first();
+
+            if (!$productManagerRole) {
+         // Handle if 'admin' role does not exist
+            return redirect()->route('admin.manageUsers')->with('error', 'Product Manager role not found.');
+      }
+
+         
+
+         // Find the user by ID
+            $user = User::find($id);
+
+            if ($user) {
+            // Attach the 'admin' role to the user
+            $user->roles()->attach($productManagerRole->id);
+
+            return redirect()->route('admin.manageUsers')->with('success', 'User has been made an Product Manager.');
       }
          // If user is not found
             return redirect()->route('admin.manageUsers')->with('error', 'User not found.');
