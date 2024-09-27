@@ -23,17 +23,21 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Product $product)
     {
+       
+        Gate::authorize('create', $product);
         return view('products.create');
+        
     }
 
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Product $product)
     {
+        //Gate::authorize('create', $product);
         $request->validate([
             'name' => 'required|unique:products|max:255',
             'description' => 'required|max:255',
@@ -108,20 +112,26 @@ class ProductController extends Controller
                         ->with('success','Product deleted successfully');
     }
 
-    public function forward($id) {
-        $product = Product::findOrFail($id);
+    public function forward(Product $product) {
+        Gate::authorize('confirm', $product);
+        //$product = Product::findOrFail($id);
         $forward_status = Status::where('name', 'Forwarded')->first();
         $product->update(['status_id' => $forward_status->id]);
         return redirect()->back()->with('status', 'Product forwarded successfully');
     }
+    
 
-    public function showConfirmPage(Product $product) {
-        // Ensure the product is forwarded and only the project manager can confirm
-        //if ($product->status === 'forwarded' && auth()->user()->role === 'project_manager') {
-            // return view('products.confirm', compact('product'));
-       // }
-        // return redirect()->back()->with('error', 'You are not allowed to confirm this product');
-    }
+    // public function createOrForward(Request $request, Product $product)
+    // {
+    //     if (Gate::denies('createOrForward', $product)) {
+    //         return response()->json(['error' => 'Unauthorized'], 403);
+    //     }
+        
+    //     // Create or forward the product logic
+    //     // ...
+    // }
+
+    
 
     public function confirm(Product $product) {
         // Only the admin can confirm
