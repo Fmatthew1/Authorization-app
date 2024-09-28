@@ -46,6 +46,7 @@ class ProductController extends Controller
         ]);
 
         Product::create($request->all());
+        
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
@@ -116,15 +117,17 @@ class ProductController extends Controller
         //$product = Product::findOrFail($id);
         $forward_status = Status::where('name', 'Forwarded')->first();
         $product->update(['status_id' => $forward_status->id]);
+        
         return redirect()->back()->with('status', 'Product forwarded successfully');
     }
     
     public function confirm(Product $product) {
-        // Only the admin can confirm
+    
         Gate::authorize('confirm', $product);
         //$product = Product::findOrFail($id);
         $confirmed_status = Status::where('name', 'Confirmed')->first();
         $product->update(['status_id' => $confirmed_status->id]);
+        $product->save();
         return redirect()->back()->with('status', 'Product confirmed successfully');
     }
 
