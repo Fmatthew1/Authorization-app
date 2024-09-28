@@ -5,37 +5,24 @@ namespace App\Policies;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Role;
-use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
 {
-
-    public function getAdminRoleId()
+    /**
+     * Get the role ID for a given role name.
+     */
+    private function getRoleId($roleName)
     {
-        //fetch the admin role ID from role table
-        $adminRole = Role::where('name', 'admin')->first();
-        return $adminRole ? $adminRole->id : null;
+        $role = Role::where('name', $roleName)->first();
+        return $role ? $role->id : null;
     }
 
-    public function productManagerRoleId()
-    {
-        //fetch the product manager role ID from role table
-        $productManagerRole = Role::where('name', 'Product Manager')->first();
-        return $productManagerRole ? $productManagerRole->id : null;
-    }
-
-    public function getUserRoleId()
-    {
-        //fetch the user role ID from role table
-        $userRole = Role::where('name', 'user')->first();
-        return $userRole ? $userRole->id : null;
-    }
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user, Product $product): bool
     {
-        return true;
+        return true;  // Allow everyone to view products
     }
 
     /**
@@ -43,7 +30,7 @@ class ProductPolicy
      */
     public function view(User $user, Product $product): bool
     {
-        return true;
+        return true;  // Allow everyone to view a specific product
     }
 
     /**
@@ -51,12 +38,9 @@ class ProductPolicy
      */
     public function create(User $user, Product $product): bool
     {
-         // Fetch role IDs dynamically from the database
-         $adminRole = Role::where('name', 'admin')->first()->id;
-         $productManagerRole = Role::where('name', 'product manager')->first()->id;
- 
-         // Allow only users who are not product managers (role_id 2) to create a product
-         return $user->role_id !== $productManagerRole;
+        // Only allow users who are NOT Product Managers to create a product
+        $productManagerRoleId = $this->getRoleId('Product Manager');
+        return !$user->roles->contains('id', $productManagerRoleId);
     }
 
     /**
@@ -64,11 +48,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product): bool
     {
-    
-        // Fetch the admin role ID dynamically
-        $adminRoleId = $this->getAdminRoleId();
-
-        // Allow update if the user has the admin role
+        $adminRoleId = $this->getRoleId('admin');
         return $user->roles->contains('id', $adminRoleId);
     }
 
@@ -77,49 +57,29 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-    
-        // Fetch the admin role ID dynamically
-        $adminRoleId = $this->getAdminRoleId();
-
-        // Allow delete if the user has the admin role
+        $adminRoleId = $this->getRoleId('admin');
         return $user->roles->contains('id', $adminRoleId);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Allow the creator (or an admin) to forward the product.
      */
-    public function restore(User $user, Product $product): bool
+    public function forward(User $user, Product $product): bool
     {
-        return false;
+        $adminRoleId = $this->getRoleId('admin');
+
+        // Allow if the user is the creator or an admin
+        return $user->id === $product->created_by || $user->roles->contains('id', $adminRoleId);
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Allow only admins and Product Managers to confirm the product.
      */
-    public function forceDelete(User $user, Product $product): bool
-    {
-        return false;
-    }
-
-    public function forward(User $user, Product $product): bool
-    {
-
-        return $user->id === $product->created_by;
-
-    }
-
     public function confirm(User $user, Product $product): bool
     {
-        // Fetch the admin role ID dynamically
-        $adminRoleId = $this->getAdminRoleId();
-        $productManagerRoleId = $this->productManagerRoleId();
-        // Allow confirm if the user has the admin role or Product Manager role
+        $adminRoleId = $this->getRoleId('admin');
+        $productManagerRoleId = $this->getRoleId('Product Manager');
+
         return $user->roles->contains('id', $adminRoleId) || $user->roles->contains('id', $productManagerRoleId);
     }
-
-    // public function createOrForward(User $user, Product $product)
-    // {
-    //     // Only Users or Admin can create and forward products
-    //     return $user->role->name === 'user' || $user->role->name === 'admin';
-    // }
 }
