@@ -67,9 +67,10 @@ class ProductPolicy
     public function forward(User $user, Product $product): bool
     {
         $adminRoleId = $this->getRoleId('admin');
-
+        
         // Allow if the user is the creator or an admin
         return $user->id === $product->created_by || $user->roles->contains('id', $adminRoleId);
+    
     }
 
     /**
