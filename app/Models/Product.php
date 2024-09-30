@@ -22,6 +22,11 @@ class Product extends Model
         'project_manager_id',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
@@ -29,7 +34,7 @@ class Product extends Model
 
     public function creator()
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function projectManager()
@@ -50,11 +55,8 @@ class Product extends Model
     public function forward()
     {
 
-        $this->status_id === 2;
-        // if ($this->status_id == 1) { // Assuming 1 is for 'Pending'
-        //     $this->status_id = 2; // Assuming 2 is for 'Forwarded'
+        $this->status_id === 2;   
              $this->save();
-        // }
     }
 
 }
