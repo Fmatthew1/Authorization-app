@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Matthew',
                 'password' => bcrypt('password'),
-                'role' => 'Product Manager',
+                'role' => 'product manager',
                 'email' => 'matthew@gmail.com'
             ],
 
