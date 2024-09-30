@@ -29,7 +29,7 @@
                         <td class="py-3 px-6 text-left">{{ $product->description }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->price }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->quantity }}</td>
-                        <td class="py-3 px-6 text-left">{{ $product->created_by }}</td>
+                        <td class="py-3 px-6 text-left">{{ $product->creator->name }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->confirmed_by }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->status->name }}</td>
                         <div class="flex item-center justify-center">
