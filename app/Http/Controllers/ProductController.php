@@ -15,8 +15,10 @@ class ProductController extends Controller
     public function index()
 
     {
-        $products = Product::all();
+        $products = Product::with('creator')->get();
+        //$products = Product::all();
         return view('products.index', compact('products'));
+
     }
 
     /**
@@ -55,8 +57,8 @@ class ProductController extends Controller
   */
     public function show($id)
     {
-        
-        $product = Product::findOrFail($id);
+        $product = Product::with('creator')->findOrFail($id);
+        //$product = Product::findOrFail($id);
         $statuses = Status::all();
         return view('products.show', compact('product', 'statuses'));
         //return view('products.show', ['products' => $product]);
