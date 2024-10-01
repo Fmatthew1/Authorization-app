@@ -30,13 +30,16 @@ class ProductPolicy
      */
     public function view(User $user, Product $product): bool
     {
-        return true;  // Allow everyone to view a specific product
+        // Only allow users who are NOT Product Managers to create a product
+        $productManagerRoleId = $this->getRoleId('Product Manager');
+        return !$user->roles->contains('id', $productManagerRoleId);
+        //return true;  // Allow everyone to view a specific product
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Product $product): bool
+    public function create(User $user): bool
     {
         // Only allow users who are NOT Product Managers to create a product
         $productManagerRoleId = $this->getRoleId('Product Manager');
