@@ -18,8 +18,6 @@ class Product extends Model
         'created_by', 
         'confirmed_by',
         'status_id',
-        'creator_id',
-        'confirmer_id',
         'project_manager_id',
     ];
 
@@ -61,13 +59,13 @@ class Product extends Model
     public function forward()
     {
 
-        $this->status_id === 2;   
+        $this->status_id = 2;   
              $this->save();
     }
 
     public function confirm()
     {
-        $this->status_id === 3;
+        $this->status_id = 3;
         $this->save();
 
     }
