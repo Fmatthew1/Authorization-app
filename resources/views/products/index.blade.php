@@ -31,7 +31,7 @@
                         <td class="py-3 px-6 text-left">{{ $product->quantity }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->creator->name }}</td>
                         <?php $confirmedUser = $product->confirmedBy; ?>
-                        <td class="py-3 px-6 text-left">{{ $confirmedUser ? $confirmedUser->id : 'Not Confirmed' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $confirmedUser ? $confirmedUser->name : 'Not Confirmed' }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->status->name }}</td>
                         <td class="py-2 px-4 text-center">
                             <div class="flex item-center justify-center">
