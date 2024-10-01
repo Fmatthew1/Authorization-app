@@ -35,6 +35,7 @@
                         <td class="py-3 px-6 text-left">{{ $product->status->name }}</td>
                         <td class="py-2 px-4 text-center">
                             <div class="flex item-center justify-center">
+                                @if($product->status_id == 1)
                                 @can('forward', $product)
                                 <form action="{{ route('products.forward', $product->id) }}" method="POST" class="inline">
                                     @csrf
@@ -43,6 +44,8 @@
                                     </button>
                                 </form>
                                 @endcan
+                                @endif
+                                @if($product->status_id == 2)
                                 @can('confirm', $product)
                                 <form action="{{ route('products.confirm', $product->id) }}" method="POST" class="inline">
                                     @csrf
@@ -51,7 +54,7 @@
                                     </button>
                                 </form>
                                 @endcan
-                                                    
+                                @endif                   
                                 <a href="{{ route('products.show', $product->id) }}" class="inline-flex bg-blue-500 px-3 py-2 text-white rounded">
                                     View
                                 </a>
