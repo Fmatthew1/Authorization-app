@@ -25,10 +25,10 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Product $product)
+    public function create()
     {
        
-        Gate::authorize('create', $product);
+        Gate::authorize('create', Product::class);
         return view('products.create');
         
     }
@@ -37,7 +37,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Product $product)
+    public function store(Request $request)
     {
         //Gate::authorize('create', $product);
         $request->validate([
@@ -130,19 +130,23 @@ class ProductController extends Controller
         //$product = Product::findOrFail($id);
         $confirmed_status = Status::where('name', 'Confirmed')->first();
         $product->update(['status_id' => $confirmed_status->id]);
-        $product->save();
+        $product->update([
+            'status_id' => $confirmed_status->id,
+            'confirmed_by' => Auth::id()
+        ]);
+
         return redirect()->back()->with('status', 'Product confirmed successfully');
     }
 
-    public function confirmedBy(Product $product, $id)
-    {
-        $product = Product::findOrFail($id);
-        $product->confirmed_by = Auth::user()->id;
-        dd($product->confirmed_by);
-        $product->save();
+    // public function confirmedBy(Product $product, $id)
+    // {
 
-        return back()->with('success', 'Product confirmed successfully.');
-    }
+    //     $product = Product::findOrFail($id);
+    //     $product->confirmed_by = Auth::user()->id;
+    //     $product->save();
+
+    //     return back()->with('success', 'Product confirmed successfully.');
+    // }
     
    
 }
