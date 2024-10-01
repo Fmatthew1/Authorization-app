@@ -19,6 +19,7 @@ class Product extends Model
         'confirmed_by',
         'status_id',
         'creator_id',
+        'confirmer_id',
         'project_manager_id',
     ];
 
@@ -35,6 +36,11 @@ class Product extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function confirmedBy()
+    {
+        return $this->belongsTo(User::class, 'confirmed_by');
     }
 
     public function projectManager()
@@ -57,6 +63,13 @@ class Product extends Model
 
         $this->status_id === 2;   
              $this->save();
+    }
+
+    public function confirm()
+    {
+        $this->status_id === 3;
+        $this->save();
+
     }
 
 }
