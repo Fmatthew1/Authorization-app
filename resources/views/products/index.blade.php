@@ -3,7 +3,7 @@
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-semibold mb-6">Product List</h1>
         @can('create', App\Models\Product::class)
-        <button><a href="{{ route('products.create', $product->id) }}" class="bg-blue-500 px-4 py-2 text-white rounded text-left font-bold text-xl mt-5 mx-px">Add New Products</a>
+        <button><a href="{{ route('products.create') }}" class="bg-blue-500 px-4 py-2 text-white rounded text-left font-bold text-xl mt-5 mx-px">Add New Products</a>
         </button>
         @endcan
     
