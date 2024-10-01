@@ -2,10 +2,10 @@
 
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-semibold mb-6">Product List</h1>
-    
-        <button><a href="{{ route('products.create') }}" class="bg-blue-500 px-4 py-2 text-white rounded text-left font-bold text-xl mt-5 mx-px">Add New Products</a>
+        @can('create', App\Models\Product::class)
+        <button><a href="{{ route('products.create', $product->id) }}" class="bg-blue-500 px-4 py-2 text-white rounded text-left font-bold text-xl mt-5 mx-px">Add New Products</a>
         </button>
-        
+        @endcan
     
         <table class="min-w-full bg-white shadow-md rounded">
             <thead>
@@ -30,10 +30,11 @@
                         <td class="py-3 px-6 text-left">{{ $product->price }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->quantity }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->creator->name }}</td>
-                        <td class="py-3 px-6 text-left">{{ $product->confirmed_by }}</td>
+                        <?php $confirmedUser = $product->confirmedBy; ?>
+                        <td class="py-3 px-6 text-left">{{ $confirmedUser ? $confirmedUser->id : 'Not Confirmed' }}</td>
                         <td class="py-3 px-6 text-left">{{ $product->status->name }}</td>
-                        <div class="flex item-center justify-center">
                         <td class="py-2 px-4 text-center">
+                            <div class="flex item-center justify-center">
                                 @can('forward', $product)
                                 <form action="{{ route('products.forward', $product->id) }}" method="POST" class="inline">
                                     @csrf
