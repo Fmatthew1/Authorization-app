@@ -30,6 +30,7 @@
                         <td class="p-2 text-gray-600 md:table-cell">{{ $product->status->name }}</td>
                         <div class="flex item-center justify-center">
                         <td class="py-2 px-4 text-center">
+                        @if($product->status_id == 1)   
                         @can('update', $product)
                                 <form action="{{ route('products.forward', $product->id) }}" method="POST" class="inline">
                                     @csrf
@@ -38,6 +39,7 @@
                                     </button>
                                 </form>
                         @endcan
+                        @endif
                         @can('confirm', $product)
                         <form action="{{ route('products.confirm', $product->id) }}" method="POST" class="inline">
                             @csrf
