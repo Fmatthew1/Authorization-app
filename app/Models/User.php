@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -59,6 +60,11 @@ class User extends Authenticatable
    {
     return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
    }
+
+   public function confirmedProducts(): HasMany
+    {
+        return $this->hasMany(Product::class, 'confirmed_by');
+    }
    
    
 }
