@@ -35,26 +35,26 @@
                         <td class="py-3 px-6 text-left">{{ $product->status->name }}</td>
                         <td class="py-2 px-4 text-center">
                             <div class="flex item-center justify-center">
-                                @if($product->status_id == 1)
                                 @can('forward', $product)
+                                @if($product->status_id == 1)
                                 <form action="{{ route('products.forward', $product->id) }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" class="inline-flex bg-gray-500 text-white px-3 py-2 rounded">
                                         Forwarded
                                     </button>
                                 </form>
-                                @endcan
                                 @endif
-                                @if($product->status_id == 2)
+                                @endcan     
                                 @can('confirm', $product)
+                                @if($product->status_id == 2)
                                 <form action="{{ route('products.confirm', $product->id) }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" class="inline-flex bg-green-500 text-white px-3 py-2 rounded">
                                         Confirmed
                                     </button>
                                 </form>
-                                @endcan
-                                @endif                   
+                                @endif 
+                                @endcan                 
                                 <a href="{{ route('products.show', $product->id) }}" class="inline-flex bg-blue-500 px-3 py-2 text-white rounded">
                                     View
                                 </a>
