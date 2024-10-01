@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -15,7 +16,7 @@ class ProductController extends Controller
     public function index()
 
     {
-        $products = Product::with('creator')->get();
+        $products = Product::with('creator', 'confirmedBy')->get();
         //$products = Product::all();
         return view('products.index', compact('products'));
 
@@ -133,6 +134,15 @@ class ProductController extends Controller
         return redirect()->back()->with('status', 'Product confirmed successfully');
     }
 
+    public function confirmedBy(Product $product, $id)
+    {
+        $product = Product::findOrFail($id);
+        $product->confirmed_by = Auth::user()->id;
+        dd($product->confirmed_by);
+        $product->save();
+
+        return back()->with('success', 'Product confirmed successfully.');
+    }
     
    
 }
