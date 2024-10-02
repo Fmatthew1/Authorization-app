@@ -120,7 +120,6 @@ class ProductController extends Controller
         //$product = Product::findOrFail($id);
         $forward_status = Status::where('name', 'Forwarded')->first();
         $product->update(['status_id' => $forward_status->id]);
-        
         return redirect()->back()->with('status', 'Product forwarded successfully');
     }
     
@@ -137,16 +136,5 @@ class ProductController extends Controller
 
         return redirect()->back()->with('status', 'Product confirmed successfully');
     }
-
-    // public function confirmedBy(Product $product, $id)
-    // {
-
-    //     $product = Product::findOrFail($id);
-    //     $product->confirmed_by = Auth::user()->id;
-    //     $product->save();
-
-    //     return back()->with('success', 'Product confirmed successfully.');
-    // }
-    
    
 }
