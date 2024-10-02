@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Status;
 
 class ProductPolicy
 {
@@ -70,7 +71,11 @@ class ProductPolicy
     public function forward(User $user, Product $product): bool
     {
         $adminRoleId = $this->getRoleId('admin');
-        
+
+        if($product->status_id == 1) {
+            return true;
+        }
+            return false;
         // Allow if the user is the creator or an admin
         return $user->id === $product->created_by || $user->roles->contains('id', $adminRoleId);
     
@@ -83,6 +88,11 @@ class ProductPolicy
     {
         $adminRoleId = $this->getRoleId('admin');
         $productManagerRoleId = $this->getRoleId('Product Manager');
+
+        if($product->status_id == 2) {
+            return true;
+        }
+            return false;
 
         return $user->roles->contains('id', $adminRoleId) || $user->roles->contains('id', $productManagerRoleId);
     }
