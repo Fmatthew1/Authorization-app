@@ -70,14 +70,20 @@ class ProductPolicy
      */
     public function forward(User $user, Product $product): bool
     {
-        $adminRoleId = $this->getRoleId('admin');
+        // $adminRoleId = $this->getRoleId('admin');
+        // // Allow if the user is the creator or an admin
+        // return $user->id === $product->created_by || $user->roles->contains('id', $adminRoleId);
 
-        if($product->status_id == 1) {
-            return true;
+        $adminRoleId = $this->getRoleId('admin');
+        $creatorRoleId = $this->getRoleId('creator');
+
+        // Check if the product is in a "Pending" state (assuming status ID 1 is "Pending")
+        if ($product->status_id == 1) {
+            // Allow if the user is the creator or an admin
+            return $user->id === $product->created_by || $user->roles->contains('id', $adminRoleId) || $user->roles->contains('id', $creatorRoleId);
         }
-            return false;
-        // Allow if the user is the creator or an admin
-        return $user->id === $product->created_by || $user->roles->contains('id', $adminRoleId);
+
+        return false;
     
     }
 
@@ -86,14 +92,21 @@ class ProductPolicy
      */
     public function confirm(User $user, Product $product): bool
     {
+        // $adminRoleId = $this->getRoleId('admin');
+        // $productManagerRoleId = $this->getRoleId('Product Manager');
+        // return $user->roles->contains('id', $adminRoleId) || $user->roles->contains('id', $productManagerRoleId);
+
         $adminRoleId = $this->getRoleId('admin');
         $productManagerRoleId = $this->getRoleId('Product Manager');
 
-        if($product->status_id == 2) {
-            return true;
+        // Check if the product is in a "Forwarded" state (assuming status ID 2 is "Forwarded")
+        if ($product->status_id == 2) {
+            // Allow if the user is an admin or a Product Manager
+            return $user->roles->contains('id', $adminRoleId) || $user->roles->contains('id', $productManagerRoleId);
         }
-            return false;
 
-        return $user->roles->contains('id', $adminRoleId) || $user->roles->contains('id', $productManagerRoleId);
+        return false;
     }
+
 }
+
